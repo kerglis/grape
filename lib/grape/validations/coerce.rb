@@ -31,7 +31,12 @@ module Grape
         return true if val.nil?
         if klass == Virtus::Attribute::Boolean
           val.is_a?(TrueClass) || val.is_a?(FalseClass)
-        elsif klass == Rack::Multipart::UploadedFile
+        # elsif klass == Rack::Multipart::UploadedFile
+        #   val.is_a?(Hashie::Mash) && val.key?(:tempfile)
+
+        # NOTE: Rack 1.1.6 doesn't have Rack::Multipart::UploadedFile
+        # changing to Rack::Utils::Multipart::UploadedFile
+        elsif klass == Rack::Utils::Multipart::UploadedFile
           val.is_a?(Hashie::Mash) && val.key?(:tempfile)
         else
           val.is_a?(klass)
